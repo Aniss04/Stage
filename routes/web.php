@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('accueil');
-});
-
+return view('accueil');
+}
+);
 
 
 //importation des groupes (Nfn)
@@ -40,6 +40,10 @@ Route::POST('export-groupes','ExportGroupesController@export');
 Route::GET('inscrire-individus','InscrireIndividusController@inscrire');
 Route::POST('inscrire-individus','InscrireIndividusController@ajouter');
 
+//Désinscrire des individus
+
+Route::GET('desinscrire-individus','DesinscrireIndividusController@lister');
+Route::POST('desinscrire-individus','DesinscrireIndividusController@retirer');
 
 //formulaire de creation d'un groupe (Nfn)
 Route::GET('creer-groupe','CreerGroupeController@formulaire');
@@ -50,6 +54,18 @@ Route::POST('liste-groupes','CreerGroupeController@creer');
 //affichage (liste) des groupes
 Route::GET('liste-groupes','ListeGroupesController@liste');
 
+
 //Gerer les seances (Nfn)
 Route::GET('gerer-seances','GererSeancesController@afficher');
 Route::POST('gerer-seances','GererSeancesController@creer');
+
+
+/*partie chelson */
+Route::GET('creer-groupe-seance','CreerSeanceGroupeController@afficher');
+Route::POST('creer-groupe-seance','CreerSeanceGroupeController@creer');
+
+Route::GET('liste-seance-groupe','CreerSeanceGroupeController@liste');
+Route::POST('liste-seance-groupe','CreerSeanceGroupeController@modifierOuSuprimmer');
+
+Route::GET('modifier-seance-groupe','CreerSeanceGroupeController@afficher');
+Route::POST('modifier-seance-groupe','CreerSeanceGroupeController@modifierInsertion');
