@@ -49,3 +49,7 @@ Route::POST('liste-groupes','CreerGroupeController@creer');
 
 //affichage (liste) des groupes
 Route::GET('liste-groupes','ListeGroupesController@liste');
+
+//Gerer les seances (Nfn)
+Route::GET('gerer-seances','GererSeancesController@afficher');
+Route::POST('gerer-seances','GererSeancesController@creer');
