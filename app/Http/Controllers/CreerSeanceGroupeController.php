@@ -49,4 +49,35 @@ public function liste(){
     ->get();
     return view('liste-seance-groupe',compact('liste_seance_groupe'));
   }
+
+  public function modifierOuSuprimmer(){
+    if(request('fid_seance')==0){
+      $liste_seance = DB::table('seance')->get();
+      $liste_cours = DB::table('cours')->get();
+      $liste_groupe = DB::table('groupe')->get();
+      $liste_individu = DB::table('individu')->get();
+      return view('modifier-seance-groupe',compact('liste_seance','liste_cours','liste_groupe','liste_individu'));
+
+    }else{
+      DB::table('seance_groupe')
+     ->where('fid_seance','=',request('fid_seance'))
+     ->delete();
+     return view('accueil');
+    }
+  }
+
+  public function modifierInsertion(){
+    DB::table('seance_groupe')->update(
+      [
+        'fid_groupe' => request('fid_groupe'),
+        'fid_cours' => request('fid_cours'),
+        'fid_individu' => request('fid_individu'),
+        'date_debut_seance' => request('date_debut_seance'),
+        'date_fin_seance' => request('date_fin_seance')
+      ],
+
+      ['fid_seance' => request('fid_seance')]
+    );
+  return view('accueil');
+  }
 }

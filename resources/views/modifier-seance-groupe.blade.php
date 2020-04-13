@@ -6,8 +6,8 @@
 <br>
 <div class="card mx-auto " style="width: 50rem;">
 <div class="card-body">
-<h1> Seance Groupe </h1>
-<form action="creer-groupe-seance" method="post">
+<h1> Modifier Seance Groupe </h1>
+<form action="modifier-seance-groupe" method="post">
 {{ csrf_field() }}
 <table>
 <div>
@@ -49,6 +49,6 @@
 <div>
 <br><br>
 </table>
-<button type="submit" class="btn btn-info">Créer seance groupe</button>
+<button type="submit" class="btn btn-info">Modifier la  seance groupe</button>
 </form>
 @endsection
