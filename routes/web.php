@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('accueil');
-});
-
+return view('welcome');
+}
+);
 
 
 //importation des groupes (Nfn)
@@ -53,3 +53,15 @@ Route::POST('liste-groupes','CreerGroupeController@creer');
 
 //affichage (liste) des groupes
 Route::GET('liste-groupes','ListeGroupesController@liste');
+
+
+
+/*partie chelson */
+Route::GET('creer-groupe-seance','CreerSeanceGroupeController@afficher');
+Route::POST('creer-groupe-seance','CreerSeanceGroupeController@creer');
+
+Route::GET('liste-seance-groupe','CreerSeanceGroupeController@liste');
+Route::POST('liste-seance-groupe','CreerSeanceGroupeController@modifierOuSuprimmer');
+
+Route::GET('modifier-seance-groupe','CreerSeanceGroupeController@afficher');
+Route::POST('modifier-seance-groupe','CreerSeanceGroupeController@modifierInsertion');
