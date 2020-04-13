@@ -40,6 +40,10 @@ Route::POST('export-groupes','ExportGroupesController@export');
 Route::GET('inscrire-individus','InscrireIndividusController@inscrire');
 Route::POST('inscrire-individus','InscrireIndividusController@ajouter');
 
+//Désinscrire des individus
+
+Route::GET('desinscrire-individus','DesinscrireIndividusController@lister');
+Route::POST('desinscrire-individus','DesinscrireIndividusController@retirer');
 
 //formulaire de creation d'un groupe (Nfn)
 Route::GET('creer-groupe','CreerGroupeController@formulaire');
