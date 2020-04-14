@@ -22,25 +22,15 @@ class DesinscrireIndividusController extends Controller
 
 				   ->get();
 
-	$listeannees = DB::table('groupe_individu')
-				   ->select('annee')
-				   ->distinct()
-				   ->get();
-
-
-
     $listeindividu = DB::table('groupe')
     					//->where('id_groupe', $groupe)
     					->join('groupe_individu','groupe_individu.fid_groupe','=','groupe.id_groupe')
     					->join('individu','individu.id_individu','=','groupe_individu.fid_individu')
-    					->select('id_groupe','id_individu','nom_individu','prenom_individu','annee')
+    					->select('id_groupe','id_individu','nom_individu','prenom_individu')
 	        			->get();
-
-
-
     
 
-    return view('desinscrire-individus',compact('listeindividu','listegroupes','listeannees'));
+    return view('desinscrire-individus',compact('listeindividu','listegroupes'));
 
 	}
 

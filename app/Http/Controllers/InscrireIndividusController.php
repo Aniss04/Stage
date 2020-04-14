@@ -21,14 +21,9 @@ class InscrireIndividusController extends Controller
     		->select('fid_individu')
 	        ->get();
     
-    if(count($datas)>0){
     foreach ($datas as $data) {
-
-          $Ingroupe[] = $data->fid_individu;
-    	}
-    	
+                $Ingroupe[] = $data->fid_individu;
             }
-    else $Ingroupe[]=0;
 
     $data2 = DB::table('individu')
                ->where('fid_type_individu', 2)
