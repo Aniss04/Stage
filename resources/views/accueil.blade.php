@@ -8,9 +8,6 @@ Bienvenu dans la page d'accueil
 
 
 
-
-
-
 <script>
 
 
