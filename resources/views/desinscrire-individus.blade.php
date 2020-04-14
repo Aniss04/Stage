@@ -37,7 +37,7 @@ function myFunction() {
 
   for (var i = 0; i < donnees.length; i++) {
  //on test si c'est le meme groupe
-  if(donnees[i].id_groupe==idGroupe){
+  if(donnees[i].id_groupe==idGroupe && donnees[i].annee==annee){
        //on creer une ligne
        var ligne2=document.createElement("tr");
         //on cerre les colonnes
