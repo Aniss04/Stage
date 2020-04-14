@@ -2,7 +2,6 @@
 @extends('layout')
 
 @section('contenu')
-<div id='id1'>
 <?php
 //pour fixer le timezone
 setlocale(LC_TIME, 'fr_FR');
@@ -15,7 +14,31 @@ $semaine_suivante=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format($
 $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-7, date_format($date_du_jour,'y'))));
 
  ?>
-</div>
+ <style>
+ .msg {
+   width: 300px;
+   height: 20px;
+   position: absolute;
+   right: 0;
+   animation-name: example;
+   animation-duration: 5s;
+   margin-top: -100px;
+ }
+
+ @keyframes example {
+   0%   {right:0px; top:-100px;}
+   50%  {right:0px; top:150px;}
+   70% {right:0px; top:-100px;}
+ }
+ </style>
+<?php if(request('msg')=="supprime_seance"){
+  print '<div class="msg bg-info">
+     La séance a été supprimée avec succès
+  </div>';
+}
+?>
+
+
 <div>
 <select onchange="actualiser()" id="id_salle">
   <?php
@@ -38,7 +61,7 @@ $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Creer une seance</h5>
+          <h5 class="modal-title" >Creer une seance</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -127,13 +150,46 @@ $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <input class="btn btn-success" type="submit" value="Créer">
+          <input class="btn btn-success" type="submit" value="Créer" name="creer">
         </div>
       </div>
     </div>
   </div>
 </form>
+<!-- Modal pour plus d'information sur une seance -->
+<form action="{{ url('gerer-seances') }}" method="POST" enctype="multipart/form-data">
+  @csrf
+  <div class="modal fade" id="informationsModal" tabindex="-1" role="dialog" aria-labelledby="informationsModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" >
+          <h5 class="modal-title" id="id_matiere"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body table-responsive" >
+          <p id="id_type"></p>
+          <p id="id_nom"></p>
+          <p id="id_groupe"></p>
 
+          <input type="hidden" id="id_fid_seance" name="fid_seance">
+          <input type="hidden" id="id_fid_groupe" name="fid_groupe">
+          <input type="hidden" id="id_fid_individu" name="fid_individu">
+          <input type="hidden" id="id_fid_cours" name="fid_cours">
+          <input type="hidden" id="id_date_debut_seance" name="date_debut_seance">
+          <input type="hidden" id="id_date_fin_seance" name="date_fin_seance">
+          <input type="hidden"  name="date_du_jour" value=<?php print request('date_du_jour'); ?>>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success " data-dismiss="modal" onclick="modifier()" data-toggle="modal" data-target="#creerSeanceModal"> Modifier </button>
+          <input type="submit" class="btn btn-danger" value="Supprimer" name="supprimer" onclick= "if(confirm('Êtes-vous sûr de vouloir supprimer ?')); else return false;">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 <div class="table-responsive">
 <table class="table table-bordered table-sm">
@@ -173,28 +229,117 @@ $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format
       print '<tr>';
         print '<td>'.$i.'h00 - '.$i.'h30</td>';
         //la par exemple je suis ou
-        print '<td> <input type="text" id="1_'.$i.'"> </td>';
+        print '<td>
+          <input type="text" id="1_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'1_'.$i.'\')">
+          <input type="hidden" id="id_type_1_'.$i.'">
+          <input type="hidden" id="id_nom_1_'.$i.'">
+          <input type="hidden" id="id_groupe_1_'.$i.'">
 
-        print '<td> <input type="text" id="2_'.$i.'"></td>';
+          <input type="hidden" id="id_fid_seance_1_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_1_'.$i.'">
+          <input type="hidden" id="id_fid_individu_1_'.$i.'">
+          <input type="hidden" id="id_fid_cours_1_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_1_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_1_'.$i.'">
+        </td>';
 
-        print '<td> <input type="text" id="3_'.$i.'"></td>';
+        print '<td>
+        <input type="text" id="2_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'2_'.$i.'\')">
+        <input type="hidden" id="id_type_2_'.$i.'">
+        <input type="hidden" id="id_nom_2_'.$i.'">
+        <input type="hidden" id="id_groupe_2_'.$i.'">
 
-        print '<td> <input type="text" id="4_'.$i.'"></td>';
 
-        print '<td> <input type="text" id="5_'.$i.'"></td>';
+        <input type="hidden" id="id_fid_seance_2_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_2_'.$i.'">
+        <input type="hidden" id="id_fid_individu_2_'.$i.'">
+        <input type="hidden" id="id_fid_cours_2_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_2_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_2_'.$i.'">
+        </td>';
 
-        print '<td> <input type="text" id="6_'.$i.'"></td>';
+        print '<td>
+        <input type="text" id="3_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'3_'.$i.'\')">
+        <input type="hidden" id="id_type_3_'.$i.'">
+        <input type="hidden" id="id_nom_3_'.$i.'">
+        <input type="hidden" id="id_groupe_3_'.$i.'">
 
-        print '<td> <input type="text" id="0_'.$i.'"></td>';
+
+        <input type="hidden" id="id_fid_seance_3_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_3_'.$i.'">
+        <input type="hidden" id="id_fid_individu_3_'.$i.'">
+        <input type="hidden" id="id_fid_cours_3_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_3_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_3_'.$i.'">
+        </td>';
+
+        print '<td>
+        <input type="text" id="4_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'4_'.$i.'\')">
+        <input type="hidden" id="id_type_4_'.$i.'">
+        <input type="hidden" id="id_nom_4_'.$i.'">
+        <input type="hidden" id="id_groupe_4_'.$i.'">
+
+
+        <input type="hidden" id="id_fid_seance_4_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_4_'.$i.'">
+        <input type="hidden" id="id_fid_individu_4_'.$i.'">
+        <input type="hidden" id="id_fid_cours_4_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_4_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_4_'.$i.'">
+        </td>';
+
+        print '<td>
+        <input type="text" id="5_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'5_'.$i.'\')">
+        <input type="hidden" id="id_type_5_'.$i.'">
+        <input type="hidden" id="id_nom_5_'.$i.'">
+        <input type="hidden" id="id_groupe_5_'.$i.'">
+
+
+        <input type="hidden" id="id_fid_seance_5_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_5_'.$i.'">
+        <input type="hidden" id="id_fid_individu_5_'.$i.'">
+        <input type="hidden" id="id_fid_cours_5_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_5_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_5_'.$i.'">
+        </td>';
+
+        print '<td>
+        <input type="text" id="6_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'6_'.$i.'\')">
+        <input type="hidden" id="id_type_6_'.$i.'">
+        <input type="hidden" id="id_nom_6_'.$i.'">
+        <input type="hidden" id="id_groupe_6_'.$i.'">
+
+
+        <input type="hidden" id="id_fid_seance_6_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_6_'.$i.'">
+        <input type="hidden" id="id_fid_individu_6_'.$i.'">
+        <input type="hidden" id="id_fid_cours_6_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_6_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_6_'.$i.'">
+        </td>';
+
+        print '<td>
+        <input type="text" id="0_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'0_'.$i.'\')">
+        <input type="hidden" id="id_type_0_'.$i.'">
+        <input type="hidden" id="id_nom_0_'.$i.'">
+        <input type="hidden" id="id_groupe_0_'.$i.'">
+
+
+        <input type="hidden" id="id_fid_seance_0_'.$i.'">
+        <input type="hidden" id="id_fid_groupe_0_'.$i.'">
+        <input type="hidden" id="id_fid_individu_0_'.$i.'">
+        <input type="hidden" id="id_fid_cours_0_'.$i.'">
+        <input type="hidden" id="id_date_debut_seance_0_'.$i.'">
+        <input type="hidden" id="id_date_fin_seance_0_'.$i.'">
+        </td>';
       print '</tr>';
     }
      ?>
   </tbody>
 </table
 </div>
-<div>
 
-</div>
+
 
 
 
@@ -246,7 +391,7 @@ function dureeSeance(){
 var liste = @json($liste_seances_groupes);
 
 
-
+//fonction qui actualise les données en fonction de la salle selectionnée
 function actualiser(){
   //je vide le tableau des données
   for (var i = 8; i < 22; i++) {
@@ -258,9 +403,8 @@ function actualiser(){
     document.getElementById("0_"+i).value='';
   }
 
-
-  //console.log(document.getElementById('id_salle').value);
   for (var i = 0; i < liste.length; i++) {
+
     //si c'est la salle choisis, j'affiche les cours
     if (liste[i].numero_salle==document.getElementById('id_salle').value) {
       //je recupere le noumero du jour correspondant
@@ -274,16 +418,64 @@ function actualiser(){
 
       for (var h = heureDebut; h <= heureFin; h++) {
         var id=jour+"_"+h;
+        var id_type="id_type_"+jour+"_"+h;
+        var id_nom="id_nom_"+jour+"_"+h;
+        var id_groupe="id_groupe_"+jour+"_"+h;
         document.getElementById(id).value=liste[i].libelle_cours;
+        document.getElementById(id_type).value=liste[i].libelle_type_seance;
+        document.getElementById(id_nom).value=liste[i].nom_individu+" "+liste[i].prenom_individu;
+        document.getElementById(id_groupe).value=liste[i].libelle_groupe;
+
+
+        var id_fid_seance="id_fid_seance_"+jour+"_"+h;
+        var id_fid_groupe="id_fid_groupe_"+jour+"_"+h;
+        var id_fid_individu="id_fid_individu_"+jour+"_"+h;
+        var id_fid_cours="id_fid_cours_"+jour+"_"+h;
+        var id_date_debut_seance="id_date_debut_seance_"+jour+"_"+h;
+        var id_date_fin_seance="id_date_fin_seance_"+jour+"_"+h;
+        document.getElementById(id_fid_seance).value=liste[i].fid_seance;
+        document.getElementById(id_fid_groupe).value=liste[i].fid_groupe;
+        document.getElementById(id_fid_individu).value=liste[i].fid_individu;
+        document.getElementById(id_fid_cours).value=liste[i].fid_cours;
+        document.getElementById(id_date_debut_seance).value=liste[i].date_debut_seance;
+        document.getElementById(id_date_fin_seance).value=liste[i].date_fin_seance;
       }
     }
   }
 }
-
 actualiser();
+
+
+function infos(id){
+
+  var id_type="id_type_"+id;
+  var id_nom="id_nom_"+id;
+  var id_groupe="id_groupe_"+id
+  document.getElementById("id_matiere").innerHTML=document.getElementById(id).value;
+  document.getElementById("id_type").innerHTML=document.getElementById(id_type).value;
+  document.getElementById("id_nom").innerHTML=document.getElementById(id_nom).value;
+  document.getElementById("id_groupe").innerHTML=document.getElementById(id_groupe).value;
+
+  //pour les input
+  var id_fid_seance="id_fid_seance_"+id;
+  var id_fid_groupe="id_fid_groupe_"+id;
+  var id_fid_individu="id_fid_individu_"+id;
+  var id_fid_cours="id_fid_cours_"+id;
+  var id_date_debut_seance="id_date_debut_seance_"+id;
+  var id_date_fin_seance="id_date_fin_seance_"+id;
+  document.getElementById("id_fid_seance").value=document.getElementById(id_fid_seance).value;
+  document.getElementById("id_fid_groupe").value=document.getElementById(id_fid_groupe).value;
+  document.getElementById("id_fid_individu").value=document.getElementById(id_fid_individu).value;
+  document.getElementById("id_fid_cours").value=document.getElementById(id_fid_cours).value;
+  document.getElementById("id_date_debut_seance").value=document.getElementById(id_date_debut_seance).value;
+  document.getElementById("id_date_fin_seance").value=document.getElementById(id_date_fin_seance).value;
+}
+
+function modifier(id){
+
+}
+
 console.log(liste);
-
-
 
 </script>
 
