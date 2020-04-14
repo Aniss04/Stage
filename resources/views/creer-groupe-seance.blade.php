@@ -51,4 +51,5 @@
 </table>
 <button type="submit" class="btn btn-info">Créer seance groupe</button>
 </form>
+
 @endsection
