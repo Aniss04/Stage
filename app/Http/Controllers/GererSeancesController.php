@@ -99,6 +99,42 @@ class GererSeancesController extends Controller
 
     }
 
+    //pour la modification
+    if(!empty(request('modifier'))){
+
+      //je recupere la date et les heures
+      $date=request('date_seance');
+      $heure_debut=request('heure_debut_seance');
+      $heure_fin=request('heure_fin_seance');
+      $date_debut=$date." ".$heure_debut;
+      $date_fin=$date." ".$heure_fin;
+
+      //je recupere la seance
+      $id_seance=DB::table('Seance')
+      ->join('Salle','Seance.fid_salle','=','Salle.id_salle')
+      ->WHERE('Salle.numero_salle','=',request('numero_salle'))
+      ->take(1)
+      ->value('Seance.id_seance');
+
+
+
+
+
+      DB::table('Seance_Groupe')
+          ->where('fid_groupe', request('fid_groupe'))
+          ->where('fid_cours', request('fid_cours'))
+          ->where('fid_individu', request('fid_individu'))
+          ->update(
+            ['date_debut_seance' => $date_debut,
+            'date_fin_seance' => $date_fin,
+            'fid_seance'=> $id_seance]);
+
+
+      $date_du_jour=request('date_seance');
+      header ('Location: ?date_du_jour='.$date_du_jour.'&msg=modifie_seance');
+      exit();
+    }
+
     return view('accueil');
   }
 
