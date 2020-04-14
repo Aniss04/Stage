@@ -52,10 +52,14 @@ class CreerGroupeController extends Controller
   {
     //je recupere toutes les formations, avec leurs niveaux et leurs composantes
     $formations=DB::table('Formation')
-    ->join('Composante', 'Composante.id_composante', '=', 'Formation.fid_composante')
-    ->join('Niveau', 'Niveau.id_niveau', '=', 'Formation.fid_niveau')
+    ->get();
+    $modalites=DB::table('modalite')
+    ->get();
+    $niveaux =DB::table('niveau')
     ->get();
 
-    return view('creer-groupe',compact('formations'));
+    
+
+    return view('creer-groupe',compact('formations','modalites','niveaux'));
   }
 }

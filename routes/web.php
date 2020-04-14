@@ -45,14 +45,11 @@ Route::POST('inscrire-individus','InscrireIndividusController@ajouter');
 Route::GET('desinscrire-individus','DesinscrireIndividusController@lister');
 Route::POST('desinscrire-individus','DesinscrireIndividusController@retirer');
 
-//formulaire de creation d'un groupe (Nfn)
+//formulaire de creation d'un groupe 
 Route::GET('creer-groupe','CreerGroupeController@formulaire');
 
-//Creation d'un groupe (Nfn)
-Route::POST('liste-groupes','CreerGroupeController@creer');
-
-//affichage (liste) des groupes
-Route::GET('liste-groupes','ListeGroupesController@liste');
+//Lister les individus
+Route::GET('liste-groupes','DesinscrireIndividusController@lister');
 
 
 //Gerer les seances (Nfn)

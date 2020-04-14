@@ -38,8 +38,8 @@
               Groupes
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Lister</a>
-              <a class="dropdown-item" href="#">Créer</a>
+              <a class="dropdown-item" href="liste-groupes">Lister</a>
+              <a class="dropdown-item" href="creer-groupe">Créer</a>
               <a class="dropdown-item" href="#">Supprimer</a>
               <a class="dropdown-item" href="inscrire-individus">Inscrire</a>
               <a class="dropdown-item" href="desinscrire-individus">Désinscrire</a>
