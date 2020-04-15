@@ -15,7 +15,7 @@
             <div class="form-group col-md-3">
             <form action="{{ url('export-groupes') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                 <input type"text" class="form-control" value="ListeGroupes" name="nom_fichier">
+                 <input type"text" class="form-control" placeholder="Nom du fichier ..." name="nom_fichier">
 </div>
     
 

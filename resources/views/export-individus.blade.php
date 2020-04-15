@@ -9,7 +9,7 @@
         <div class="card-body">
             <form action="{{ url('export-individus') }}" method="POST" enctype="multipart/form-data">
                 @csrf 
-                Nom du fichier : <input type"text" value="ListeIndividus" name="nom_fichier">.xls
+                Nom du fichier : <input type"text" placeholder="Nom du fichier ..." name="nom_fichier">.xls
                 <br><br>
                 <input type="submit" class="btn btn-success" value="Exporter">
             </form>
