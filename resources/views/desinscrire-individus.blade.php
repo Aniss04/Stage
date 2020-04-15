@@ -2,15 +2,18 @@
 
 @section('contenu')
 
+<br>
 
 <form action="desinscrire-individus" method="post" >
 {{ csrf_field ()}}
 
-<div class="container">
-    <div class="card mt-4">
-Selectionner le groupe :
 
-<select id= "groupe" onchange="myFunction()">
+<div class="card mx-auto " style="width: 50rem;">
+  <div class="card-body">
+
+<h5>Selectionner le groupe : </h5>
+<br> 
+<select class="form-control" id= "groupe" onchange="myFunction()">
 
 	@foreach($listegroupes as $listegroupe)
 
@@ -20,7 +23,7 @@ Selectionner le groupe :
 
 <br>
 
-<select id= "annee" onchange="myFunction()">
+<select class="form-control" id= "annee" onchange="myFunction()">
 
   @foreach($listeannees as $listeannee)
 
@@ -90,10 +93,10 @@ function myFunction() {
 </script>
 
 
-</div><br>
-<button class="btn btn-success" >Supprimer</button>
+<br>
+<button class="btn btn-info" >Supprimer</button>
 </div>
-
+</div>
 
 <div class="container">
     <div class="card mt-4">

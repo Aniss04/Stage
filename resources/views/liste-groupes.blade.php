@@ -1,27 +1,35 @@
 @extends('layout')
 
 @section('contenu')
-<div class="container">
-    <div class="card mt-4">
-Selectionner le groupe :
+<br>
 
-<select id= "groupe" onchange="Function()">
+<div class="card mx-auto " style="width: 50rem;">
+  <div class="card-body">
+<h5>Selectionner le groupe :</h5>
+<br>
+<div class="row">
+
+<div class="form-group col-md-6">
+<select class="form-control" id= "groupe" onchange="Function()">
 
   @foreach($listegroupes as $listegroupe)
 
   <option value= "{{ $listegroupe->id_groupe }}" > {{ $listegroupe->libelle_groupe }} </option>
   @endforeach
 </select>
+</div>
 <br>
 
-<select id= "annee" onchange="Function()">
+<div class="form-group col-md-6">
+<select class="form-control" id= "annee" onchange="Function()">
 
   @foreach($listeannees as $listeannee)
 
   <option value= "{{ $listeannee->annee }}" > {{ $listeannee->annee }} </option>
   @endforeach
 </select>
-
+</div>
+</div>
 
 <script>
 function Function() {
@@ -83,11 +91,10 @@ function Function() {
 
 </div><br>
 
-</div
+</div>
 
-
-<div class="container">
-    <div class="card mt-4">
+<br>
+<div class="card mx-auto " style="width: 70rem;">
 
       <div>
         <h3 class="">💻 Individus de Nanterre </h3>

@@ -5,12 +5,15 @@
 
 <form action="supprimer" method="POST" >
 {{ csrf_field ()}}
-
+<br>
 <div class="card mx-auto " style="width: 50rem;">
-  <div class="card-body">
-Selectionner le groupe :
+<div class="card-body">
 
-<select name="groupe1">
+
+	<h5>Selectionner le groupe :</h5>
+	<br>
+
+<select class="form-control" name="groupe1">
 
   @foreach($listegroupes as $listegroupe)
 
@@ -18,10 +21,11 @@ Selectionner le groupe :
   @endforeach
 </select>
 
+
 <br>
 
-<button class="btn btn-success">Supprimer</button>
-</div>
+<button class="btn btn-danger">Supprimer</button>
+
 
 </div>
 </form>
