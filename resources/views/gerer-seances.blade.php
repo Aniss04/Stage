@@ -2,6 +2,10 @@
 @extends('layout')
 
 @section('contenu')
+
+
+
+
 <?php
 //pour fixer le timezone
 setlocale(LC_TIME, 'fr_FR');
@@ -17,50 +21,73 @@ $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format
  <style>
  .msg {
    width: 300px;
-   height: 20px;
-   position: absolute;
+   height: 30px;
+   position: fixed;
    right: 0;
    animation-name: example;
-   animation-duration: 5s;
-   margin-top: -100px;
+   animation-duration: 9s;
+   margin-top: -140px;
+   text-align: center;
+   color: white;
  }
 
  @keyframes example {
    0%   {right:0px; top:-100px;}
-   50%  {right:0px; top:150px;}
-   70% {right:0px; top:-100px;}
+   50%  {right:0px; top:170px;}
+   100% {right:0px; top:-100px;}
  }
  </style>
 <?php
+
 if(request('msg')=="supprime_seance"){
-  print '<div class="msg bg-info">
+  print '<div class="msg bg-info card">
+
      La séance a été supprimée avec succès
+     <br>
   </div>';
 }
 else if(request('msg')=="modifie_seance"){
-  print '<div class="msg bg-info">
+  print '<div class="msg bg-info card">
      La séance a été modifiée avec succès
   </div>';
-
+}
+else if(request('msg')=='creer_seance'){
+  print '<div class="msg bg-info card">
+     La séance a été créée avec succès
+  </div>';
+}
+else if(request('msg')=='error_creer_seance'){
+  print '<div class="msg bg-danger card">
+     Cette plage Horraire a été déjà reservée
+  </div>';
 }
 ?>
+ <div class="row" style="">
+   <div class="col-sm-6" style="background-color:#225d8c; text-align:left; color: white">
+     &nbsp;<i>Changer de Salle :</i>
+     <select onchange="actualiser()" id="id_salle">
+       <?php if(!empty(request('salle'))){
+         print '<option>'.request("salle").'</option>';
+       } ?>
+       <?php
+       for ($i=0; $i <count($salles) ; $i++) {
+         print '<option >'.$salles[$i]->numero_salle.'</option>';
+       }
+       ?>
+     </select>
+     &nbsp;&nbsp;&nbsp;
+     <button class="btn btn-danger" data-toggle="modal" data-target="#creerSeanceModal">Créer Une Séance</button>
+   </div>
+   <div class="col-sm-6" style="background-color:#225d8c; text-align:right; color: white">
+     <a  href="gerer-seances?date_du_jour=<?php print $semaine_precedente;?>"><img src="http://free-icon-download.com/modules/PDdownloads/images/screenshots/free-icon-download_gradient-left-arrow.png" width="6%"></a>
+     Semaine
+     <a href="gerer-seances?date_du_jour=<?php print $semaine_suivante;?>"><img src="http://icon-library.com/images/next-icon/next-icon-2.jpg" width="6%"></a>
+     &nbsp;&nbsp;&nbsp;<i>Changer de date :</i>
+     <input type="date" onchange='var v=value;window.location.href="?date_du_jour="+value' value="<?php print utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d'), date_format($date_du_jour,'y'))));  ?>">&nbsp;
+   </div>
+ </div>
 
-
-<div>
-<select onchange="actualiser()" id="id_salle">
-  <?php
-  for ($i=0; $i <count($salles) ; $i++) {
-    print '<option >'.$salles[$i]->numero_salle.'</option>';
-  }
-  ?>
-</select>
-<button class="btn btn-primary" data-toggle="modal" data-target="#creerSeanceModal">Creer</button>
-
-<a class="btn btn-primary" href="gerer-seances?date_du_jour=<?php print $semaine_precedente;?>">Precedent</a>
-<a class="btn btn-primary" href="gerer-seances?date_du_jour=<?php print $semaine_suivante;?>">suivant</a>
-
-</div>
-
+<br><br>
 <!-- Modal pour la creation d'une seance -->
 <form action="{{ url('gerer-seances') }}" method="POST" enctype="multipart/form-data">
   @csrf
@@ -163,6 +190,7 @@ else if(request('msg')=="modifie_seance"){
     </div>
   </div>
 </form>
+
 <!-- Modal pour plus d'information sur une seance -->
 <form action="{{ url('gerer-seances') }}" method="POST" enctype="multipart/form-data">
   @csrf
@@ -202,17 +230,18 @@ else if(request('msg')=="modifie_seance"){
   </div>
 </form>
 
-<div class="table-responsive">
-<table class="table table-bordered table-sm">
-  <thead>
+
+<!---->
+<div class='table-responsive'>
+<table class="table">
     <tr>
-      <th scope="col">Heures</th>
+      <th >Heures</th>
       <?php
       $j= date_format($date_du_jour,'w');
       if($j==0){
         for ($i=6; $i >=0 ; $i--) {
           $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
-          print '<th scope="col">'.$d.'</th>';
+          print '<th >'.$d.'</th>';
         }
 
       }
@@ -220,28 +249,27 @@ else if(request('msg')=="modifie_seance"){
         for ($i=$j-1; $i >=1 ; $i--) {
 
           $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
-          print '<th scope="col">'.$d.'</th>';
+          print '<th >'.$d.'</th>';
         }
 
         for ($k=0; $k <=7-$j; $k++) {
 
           $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')+$k, date_format($date_du_jour,'y'))));
-          print '<th scope="col">'.$d.'</th>';
+          print '<th >'.$d.'</th>';
         }
 
       }
        ?>
 
-    </tr>
-  </thead>
-  <tbody>
     <?php
+
     for ($i=8; $i < 22; $i++) {
       print '<tr>';
         print '<td>'.$i.'h00 - '.$i.'h30</td>';
         //la par exemple je suis ou
         print '<td id="id_colonne_1_'.$i.'">
           <input type="text" id="1_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'1_'.$i.'\')">
+
           <input type="hidden" id="id_type_1_'.$i.'">
           <input type="hidden" id="id_nom_1_'.$i.'">
           <input type="hidden" id="id_groupe_1_'.$i.'">
@@ -352,8 +380,7 @@ else if(request('msg')=="modifie_seance"){
       print '</tr>';
     }
      ?>
-  </tbody>
-</table
+</table>
 </div>
 
 <!--Pour la modification -->
@@ -456,13 +483,6 @@ Date.prototype.toDateInputValue = (function() {
 document.getElementById('id_dateSeance').value = new Date().toDateInputValue();
 
 
-
-
-function actualiser(){
-  document.getElementById('id1').innerHTML="hahaha";
-}
-
-
 function dureeSeance(){
   var selectHeureFin= document.getElementById("id_fin");
   var heure=document.getElementById('id_debut').value;
@@ -559,6 +579,8 @@ function infos(id){
   document.getElementById("id_type").innerHTML=document.getElementById(id_type).value;
   document.getElementById("id_nom").innerHTML=document.getElementById(id_nom).value;
   document.getElementById("id_groupe").innerHTML=document.getElementById(id_groupe).value;
+
+  console.log(document.getElementById(id_nom).value);
 
 
   var dateDebut =  document.getElementById(id_dbt).value;
