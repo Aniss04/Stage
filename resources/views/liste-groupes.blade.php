@@ -29,13 +29,14 @@ function Function() {
   var annee = document.getElementById("annee").value;
   var donnees = @json($listeindividu);
   document.getElementById("id_tableau").innerHTML='';
+
    var ligne1=document.createElement("tr");
    var colonne1=document.createElement("th");
    var colonne2=document.createElement("th");
    var colonne3=document.createElement("th");
-   colonne1.innerHTML="id"
-   colonne2.innerHTML="nom"
-   colonne3.innerHTML="prenom"
+   colonne1.innerHTML="Numéro"
+   colonne2.innerHTML="Nom"
+   colonne3.innerHTML="Prenom"
    ligne1.appendChild(colonne1);
    ligne1.appendChild(colonne2);
    ligne1.appendChild(colonne3);

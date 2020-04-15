@@ -19,9 +19,23 @@ class CreerGroupeController extends Controller
       'fid_niveau' => request('niveau')]);
 
  
-    return view('accueil');
+    header ('Location: /creer-groupe');
+  exit();
   }
 
+/*
+ public function fusion()
+  {
+
+
+      DB::table('association_groupe')
+      ->updateOrInsert([
+      'fid_groupe_1' => request('grp1'),
+      'fid_groupe_2' => request('grp2')]);
+
+
+  }
+*/
   public function formulaire()
   {
     //je recupere toutes les formations, avec leurs niveaux et leurs composantes
@@ -32,8 +46,13 @@ class CreerGroupeController extends Controller
     $niveaux =DB::table('niveau')
     ->get();
 
+    $groupe=DB::table('groupe')
+    ->get();
+
+    $annee=DB::table('groupe_individu')
+    ->get();
     
 
-    return view('creer-groupe',compact('formations','modalites','niveaux'));
+    return view('creer-groupe',compact('formations','modalites','niveaux','groupe','annee'));
   }
 }
