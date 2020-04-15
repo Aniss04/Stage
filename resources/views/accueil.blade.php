@@ -2,11 +2,13 @@
 
 @section('contenu')
 
-<br><br>
-
-Bienvenu dans la page d'accueil
-
-
+<style type="text/css">
+  body {
+        background-image: url("/images/nanterrepng.jpg");
+        background-size: 2100px;
+        background-attachment: fixed;
+	}
+</style>
 
 <script>
 
