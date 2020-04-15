@@ -2,27 +2,30 @@
 
 @section('contenu')
 
+<br> 
 
 <form action="inscrire-individus" method="post" >
 {{ csrf_field ()}}
 
-<div class="container">
-    <div class="card mt-4">
-Selectionner le groupe : 
-
-<select name= "groupe">
+<div class="card mx-auto " style="width: 50rem;">
+  <div class="card-body">
+<h5>Selectionner le groupe : </h5>
+<br> 
+<select class="form-control" name= "groupe">
 
 	@foreach($listegroupes as $listegroupe)
 
 	<option value= "{{ $listegroupe->id_groupe }}" > {{ $listegroupe->libelle_groupe }} </option>
 	@endforeach
 </select>
+<br>
 
-<input type="text" class="form-control" name='annee' >
+<input  type="text" class="form-control" name='annee'  placeholder="Année">
+<br>
+<button class="btn btn-info">Ajouter</button>
 
+</div>
 
-</div><br>
-<button class="btn btn-success">Ajouter</button>
 </div>
 
 

@@ -47,9 +47,14 @@ Route::POST('desinscrire-individus','DesinscrireIndividusController@retirer');
 
 //formulaire de creation d'un groupe 
 Route::GET('creer-groupe','CreerGroupeController@formulaire');
+Route::POST('creer-groupe','CreerGroupeController@creer');
+
+//Supression d'un groupe
+Route::GET('supprimer','SupprimerGroupeController@lister');
+Route::POST('supprimer','SupprimerGroupeController@retirer');
 
 //Lister les individus
-Route::GET('liste-groupes','DesinscrireIndividusController@lister');
+Route::GET('liste-groupes','ListeGroupesController@lister');
 
 
 //Gerer les seances (Nfn)

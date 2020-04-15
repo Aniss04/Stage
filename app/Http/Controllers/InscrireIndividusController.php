@@ -47,7 +47,8 @@ class InscrireIndividusController extends Controller
 	'annee' => request('annee')]);
 	}
 
-	return view('/accueil');
+	header ('Location: /inscrire-individus');
+	exit();
 
 }
 

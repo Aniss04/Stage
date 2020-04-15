@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 
 
-class DesinscrireIndividusController extends Controller
+class SupprimerGroupeController extends Controller
 {
 
 	public function lister()
@@ -37,20 +37,22 @@ class DesinscrireIndividusController extends Controller
 	        			->get();
     
 
-    return view('desinscrire-individus',compact('listeindividu','listegroupes','listeannees'));
+    return view('supprimer',compact('listeindividu','listegroupes','listeannees'));
 
 	}
 
 	public function retirer()
 {	
-	for($i=0;$i<count(request('choix'));$i++)
-	{
-	 DB::table('groupe_individu')
-	 ->where('fid_individu',request('choix')[$i] )
-	 ->delete();
-	}
 
-	header ('Location: /desinscrire-individus');
+	DB::table('groupe_individu')
+	 ->where('fid_groupe',request('groupe1') )
+	 ->delete();
+	
+	DB::table('groupe')
+	 ->where('id_groupe',request('groupe1'))
+	 ->delete();
+
+	header ('Location: /supprimer');
 	exit();
 
 }
