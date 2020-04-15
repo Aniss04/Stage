@@ -87,7 +87,8 @@ else if(request('msg')=='error_creer_seance'){
    </div>
  </div>
 
-<br><br>
+<br>
+
 <!-- Modal pour la creation d'une seance -->
 <form action="{{ url('gerer-seances') }}" method="POST" enctype="multipart/form-data">
   @csrf

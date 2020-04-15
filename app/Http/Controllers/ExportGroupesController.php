@@ -11,14 +11,15 @@ use DB;
 
 class ExportGroupesController extends Controller
 {
-  public function afficher()
-  {
-    return view('export-groupes');
-  }
-  
-  public function export()
-  {
-    return Excel::download(new ExportGroupes, 'ListeGroupes.xls');
-    return view('accueil');
-  }
+	public function afficher()
+	{
+		return view('export-groupes');
+	}
+	public function export()
+	{
+		$nom_fichier=request('nom_fichier');
+	    $nom_fichier.=".xls";
+	    return Excel::download(new ExportGroupes, $nom_fichier);
+	    return view('accueil');
+	}
 }

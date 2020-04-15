@@ -11,21 +11,15 @@ use DB;
 
 class ExportIndividusController extends Controller
 {
-  public function afficher()
+	public function afficher()
     {
         return view('export-individus');
     }
-
-  public function export()
-  {
-   
-   
-    
-        return Excel::download(new ExportIndividus, 'ListeIndividus.xls');
-    
-
-
-    return view('accueil');
-
-    }
+    public function export()
+    {
+	  	$nom_fichier=request('nom_fichier');
+	    $nom_fichier.=".xls";
+	    return Excel::download(new ExportIndividus, $nom_fichier);
+	    return view('accueil');
+	}
 }
