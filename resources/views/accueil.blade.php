@@ -5,7 +5,7 @@
 <style type="text/css">
   body {
         background-image: url("/images/nanterrepng.jpg");
-        background-size: 2100px;
+        background-size: cover;
         background-attachment: fixed;
 	}
 </style>
