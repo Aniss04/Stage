@@ -63,8 +63,6 @@ Route::POST('gerer-seances','GererSeancesController@creer');
 
 
 /*partie chelson */
-Route::GET('creer-groupe-seance','CreerSeanceGroupeController@afficher');
-Route::POST('creer-groupe-seance','CreerSeanceGroupeController@creer');
 
 Route::GET('liste-seance-groupe','CreerSeanceGroupeController@liste');
 Route::POST('liste-seance-groupe','CreerSeanceGroupeController@modifierOuSuprimmer');

@@ -2,10 +2,7 @@
 @extends('layout')
 
 @section('contenu')
-
-
-
-
+<title>Gerer les séances</title>
 <?php
 //pour fixer le timezone
 setlocale(LC_TIME, 'fr_FR');
@@ -37,8 +34,9 @@ $semaine_precedente=utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format
    100% {right:0px; top:-100px;}
  }
  </style>
-<?php
 
+<!--Pour afficher des messages de notification-->
+<?php
 if(request('msg')=="supprime_seance"){
   print '<div class="msg bg-info card">
 
@@ -62,8 +60,9 @@ else if(request('msg')=='error_creer_seance'){
   </div>';
 }
 ?>
- <div class="row" style="">
-   <div class="col-sm-6" style="background-color:#225d8c; text-align:left; color: white">
+
+<div class="row" style="">
+  <div class="col-sm-6" style="background-color:#225d8c; text-align:left; color: white">
      &nbsp;<i>Changer de Salle :</i>
      <select onchange="actualiser()" id="id_salle">
        <?php if(!empty(request('salle'))){
@@ -86,8 +85,8 @@ else if(request('msg')=='error_creer_seance'){
      <input type="date" onchange='var v=value;window.location.href="?date_du_jour="+value' value="<?php print utf8_encode(strftime('%Y-%m-%d', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d'), date_format($date_du_jour,'y'))));  ?>">&nbsp;
    </div>
  </div>
+<div style="text-align :center; color : #b06b00"><img src="https://cdn.onlinewebfonts.com/svg/img_85286.png" width="2%"> Cliquez sur une plage horaire remplie pour plus d'information sur la séance</div>
 
-<br>
 
 <!-- Modal pour la creation d'une seance -->
 <form action="{{ url('gerer-seances') }}" method="POST" enctype="multipart/form-data">
@@ -176,11 +175,8 @@ else if(request('msg')=='error_creer_seance'){
                   }
                   ?>
                 </select>
-
                </td>
             </tr>
-
-
           </table>
         </div>
         <div class="modal-footer">
@@ -199,6 +195,7 @@ else if(request('msg')=='error_creer_seance'){
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" >
+          <img src="https://cdn.pixabay.com/photo/2017/03/19/03/50/material-icon-2155446_960_720.png" width="10%">
           <h5 class="modal-title" id="id_matiere"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -207,12 +204,10 @@ else if(request('msg')=='error_creer_seance'){
         <div class="modal-body table-responsive" >
           <p id="id_type"></p>
           <p id="id_nom"></p>
-          <p id="id_groupe"></p>
-          <span id="id_dte"></span>
-          <span id="id_dbt"></span> -
+          <p id="id_groupe"></p> Le
+          <span id="id_dte"></span> de 
+          <span id="id_dbt"></span> à
           <span id="id_fn"></span>
-
-
           <input type="hidden" id="id_fid_seance" name="fid_seance">
           <input type="hidden" id="id_fid_groupe" name="fid_groupe">
           <input type="hidden" id="id_fid_individu" name="fid_individu">
@@ -220,168 +215,136 @@ else if(request('msg')=='error_creer_seance'){
           <input type="hidden" id="id_date_debut_seance" name="date_debut_seance">
           <input type="hidden" id="id_date_fin_seance" name="date_fin_seance">
           <input type="hidden"  name="date_du_jour" value=<?php print request('date_du_jour'); ?>>
-
         </div>
         <div class="modal-footer">
-          <button class="btn btn-success " data-dismiss="modal" onclick="modifier()" data-toggle="modal" data-target="#modifierSeanceModal"> Modifier </button>
+          <button class="btn btn-primary " data-dismiss="modal" onclick="modifier()" data-toggle="modal" data-target="#modifierSeanceModal"> Modifier </button>
           <input type="submit" class="btn btn-danger" value="Supprimer" name="supprimer" onclick= "if(confirm('Êtes-vous sûr de vouloir supprimer ?')); else return false;">
         </div>
       </div>
     </div>
   </div>
 </form>
-
-
 <!---->
 <div class='table-responsive'>
-<table class="table">
-    <tr>
-      <th >Heures</th>
+  <table class="table">
+      <tr>
+        <th >Heures</th>
+        <?php
+        $j= date_format($date_du_jour,'w');
+        if($j==0){
+          for ($i=6; $i >=0 ; $i--) {
+            $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
+            print '<th >'.$d.'</th>';
+          }
+        }
+        else {
+          for ($i=$j-1; $i >=1 ; $i--) {
+            $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
+            print '<th >'.$d.'</th>';
+          }
+          for ($k=0; $k <=7-$j; $k++) {
+            $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')+$k, date_format($date_du_jour,'y'))));
+            print '<th >'.$d.'</th>';
+          }
+
+        }
+         ?>
+
       <?php
-      $j= date_format($date_du_jour,'w');
-      if($j==0){
-        for ($i=6; $i >=0 ; $i--) {
-          $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
-          print '<th >'.$d.'</th>';
-        }
 
-      }
-      else {
-        for ($i=$j-1; $i >=1 ; $i--) {
+      for ($i=8; $i < 22; $i++) {
+        print '<tr>';
+          print '<td>'.$i.'h00 - '.$i.'h30</td>';
+          //la par exemple je suis ou
+          print '<td id="id_colonne_1_'.$i.'">
+            <input class="col-xs-2" type="text" id="1_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'1_'.$i.'\')">
+            <input type="hidden" id="id_type_1_'.$i.'">
+            <input type="hidden" id="id_nom_1_'.$i.'">
+            <input type="hidden" id="id_groupe_1_'.$i.'">
+            <input type="hidden" id="id_fid_seance_1_'.$i.'">
+            <input type="hidden" id="id_fid_groupe_1_'.$i.'">
+            <input type="hidden" id="id_fid_individu_1_'.$i.'">
+            <input type="hidden" id="id_fid_cours_1_'.$i.'">
+            <input type="hidden" id="id_date_debut_seance_1_'.$i.'">
+            <input type="hidden" id="id_date_fin_seance_1_'.$i.'">
+          </td>';
+          print '<td>
+          <input type="text" id="2_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'2_'.$i.'\')">
+          <input type="hidden" id="id_type_2_'.$i.'">
+          <input type="hidden" id="id_nom_2_'.$i.'">
+          <input type="hidden" id="id_groupe_2_'.$i.'">
+          <input type="hidden" id="id_fid_seance_2_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_2_'.$i.'">
+          <input type="hidden" id="id_fid_individu_2_'.$i.'">
+          <input type="hidden" id="id_fid_cours_2_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_2_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_2_'.$i.'">
+          </td>';
+          print '<td>
+          <input type="text" id="3_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'3_'.$i.'\')">
+          <input type="hidden" id="id_type_3_'.$i.'">
+          <input type="hidden" id="id_nom_3_'.$i.'">
+          <input type="hidden" id="id_groupe_3_'.$i.'">
+          <input type="hidden" id="id_fid_seance_3_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_3_'.$i.'">
+          <input type="hidden" id="id_fid_individu_3_'.$i.'">
+          <input type="hidden" id="id_fid_cours_3_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_3_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_3_'.$i.'">
+          </td>';
+          print '<td>
+          <input type="text" id="4_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'4_'.$i.'\')">
+          <input type="hidden" id="id_type_4_'.$i.'">
+          <input type="hidden" id="id_nom_4_'.$i.'">
+          <input type="hidden" id="id_groupe_4_'.$i.'">
+          <input type="hidden" id="id_fid_seance_4_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_4_'.$i.'">
+          <input type="hidden" id="id_fid_individu_4_'.$i.'">
+          <input type="hidden" id="id_fid_cours_4_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_4_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_4_'.$i.'">
+          </td>';
+          print '<td>
+          <input type="text" id="5_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'5_'.$i.'\')">
+          <input type="hidden" id="id_type_5_'.$i.'">
+          <input type="hidden" id="id_nom_5_'.$i.'">
+          <input type="hidden" id="id_groupe_5_'.$i.'">
+          <input type="hidden" id="id_fid_seance_5_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_5_'.$i.'">
+          <input type="hidden" id="id_fid_individu_5_'.$i.'">
+          <input type="hidden" id="id_fid_cours_5_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_5_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_5_'.$i.'">
+          </td>';
+          print '<td>
+          <input type="text" id="6_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'6_'.$i.'\')">
+          <input type="hidden" id="id_type_6_'.$i.'">
+          <input type="hidden" id="id_nom_6_'.$i.'">
+          <input type="hidden" id="id_groupe_6_'.$i.'">
+          <input type="hidden" id="id_fid_seance_6_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_6_'.$i.'">
+          <input type="hidden" id="id_fid_individu_6_'.$i.'">
+          <input type="hidden" id="id_fid_cours_6_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_6_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_6_'.$i.'">
+          </td>';
 
-          $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')-$i, date_format($date_du_jour,'y'))));
-          print '<th >'.$d.'</th>';
-        }
-
-        for ($k=0; $k <=7-$j; $k++) {
-
-          $d=utf8_encode(strftime('%a %d %b %Y', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')+$k, date_format($date_du_jour,'y'))));
-          print '<th >'.$d.'</th>';
-        }
-
+          print '<td>
+          <input type="text" id="0_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'0_'.$i.'\')">
+          <input type="hidden" id="id_type_0_'.$i.'">
+          <input type="hidden" id="id_nom_0_'.$i.'">
+          <input type="hidden" id="id_groupe_0_'.$i.'">
+          <input type="hidden" id="id_fid_seance_0_'.$i.'">
+          <input type="hidden" id="id_fid_groupe_0_'.$i.'">
+          <input type="hidden" id="id_fid_individu_0_'.$i.'">
+          <input type="hidden" id="id_fid_cours_0_'.$i.'">
+          <input type="hidden" id="id_date_debut_seance_0_'.$i.'">
+          <input type="hidden" id="id_date_fin_seance_0_'.$i.'">
+          </td>';
+        print '</tr>';
       }
        ?>
-
-    <?php
-
-    for ($i=8; $i < 22; $i++) {
-      print '<tr>';
-        print '<td>'.$i.'h00 - '.$i.'h30</td>';
-        //la par exemple je suis ou
-        print '<td id="id_colonne_1_'.$i.'">
-          <input type="text" id="1_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'1_'.$i.'\')">
-
-          <input type="hidden" id="id_type_1_'.$i.'">
-          <input type="hidden" id="id_nom_1_'.$i.'">
-          <input type="hidden" id="id_groupe_1_'.$i.'">
-
-
-          <input type="hidden" id="id_fid_seance_1_'.$i.'">
-          <input type="hidden" id="id_fid_groupe_1_'.$i.'">
-          <input type="hidden" id="id_fid_individu_1_'.$i.'">
-          <input type="hidden" id="id_fid_cours_1_'.$i.'">
-          <input type="hidden" id="id_date_debut_seance_1_'.$i.'">
-          <input type="hidden" id="id_date_fin_seance_1_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="2_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'2_'.$i.'\')">
-        <input type="hidden" id="id_type_2_'.$i.'">
-        <input type="hidden" id="id_nom_2_'.$i.'">
-        <input type="hidden" id="id_groupe_2_'.$i.'">
-
-
-
-        <input type="hidden" id="id_fid_seance_2_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_2_'.$i.'">
-        <input type="hidden" id="id_fid_individu_2_'.$i.'">
-        <input type="hidden" id="id_fid_cours_2_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_2_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_2_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="3_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'3_'.$i.'\')">
-        <input type="hidden" id="id_type_3_'.$i.'">
-        <input type="hidden" id="id_nom_3_'.$i.'">
-        <input type="hidden" id="id_groupe_3_'.$i.'">
-
-
-        <input type="hidden" id="id_fid_seance_3_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_3_'.$i.'">
-        <input type="hidden" id="id_fid_individu_3_'.$i.'">
-        <input type="hidden" id="id_fid_cours_3_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_3_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_3_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="4_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'4_'.$i.'\')">
-        <input type="hidden" id="id_type_4_'.$i.'">
-        <input type="hidden" id="id_nom_4_'.$i.'">
-        <input type="hidden" id="id_groupe_4_'.$i.'">
-
-
-
-        <input type="hidden" id="id_fid_seance_4_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_4_'.$i.'">
-        <input type="hidden" id="id_fid_individu_4_'.$i.'">
-        <input type="hidden" id="id_fid_cours_4_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_4_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_4_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="5_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'5_'.$i.'\')">
-        <input type="hidden" id="id_type_5_'.$i.'">
-        <input type="hidden" id="id_nom_5_'.$i.'">
-        <input type="hidden" id="id_groupe_5_'.$i.'">
-
-
-
-        <input type="hidden" id="id_fid_seance_5_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_5_'.$i.'">
-        <input type="hidden" id="id_fid_individu_5_'.$i.'">
-        <input type="hidden" id="id_fid_cours_5_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_5_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_5_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="6_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'6_'.$i.'\')">
-        <input type="hidden" id="id_type_6_'.$i.'">
-        <input type="hidden" id="id_nom_6_'.$i.'">
-        <input type="hidden" id="id_groupe_6_'.$i.'">
-
-
-
-        <input type="hidden" id="id_fid_seance_6_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_6_'.$i.'">
-        <input type="hidden" id="id_fid_individu_6_'.$i.'">
-        <input type="hidden" id="id_fid_cours_6_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_6_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_6_'.$i.'">
-        </td>';
-
-        print '<td>
-        <input type="text" id="0_'.$i.'" data-toggle="modal" data-target="#informationsModal" onclick="infos(\'0_'.$i.'\')">
-        <input type="hidden" id="id_type_0_'.$i.'">
-        <input type="hidden" id="id_nom_0_'.$i.'">
-        <input type="hidden" id="id_groupe_0_'.$i.'">
-
-
-
-        <input type="hidden" id="id_fid_seance_0_'.$i.'">
-        <input type="hidden" id="id_fid_groupe_0_'.$i.'">
-        <input type="hidden" id="id_fid_individu_0_'.$i.'">
-        <input type="hidden" id="id_fid_cours_0_'.$i.'">
-        <input type="hidden" id="id_date_debut_seance_0_'.$i.'">
-        <input type="hidden" id="id_date_fin_seance_0_'.$i.'">
-        </td>';
-      print '</tr>';
-    }
-     ?>
-</table>
+  </table>
 </div>
 
 <!--Pour la modification -->
@@ -457,9 +420,7 @@ else if(request('msg')=='error_creer_seance'){
               </td>
             <tr>
             </tr>
-
           </table>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -469,8 +430,6 @@ else if(request('msg')=='error_creer_seance'){
     </div>
   </div>
 </form>
-
-
 
 <script>
 
@@ -482,8 +441,6 @@ Date.prototype.toDateInputValue = (function() {
 });
 //par default, la date de la seance est la date du jour
 document.getElementById('id_dateSeance').value = new Date().toDateInputValue();
-
-
 function dureeSeance(){
   var selectHeureFin= document.getElementById("id_fin");
   var heure=document.getElementById('id_debut').value;
@@ -506,27 +463,21 @@ function dureeSeance(){
   }
 }
 
-
-
-//var d= new Date("2020-04-14 09:30:00");
-//console.log(d.getDay());
+//je transforme mets mets données dans un tableau JS 
 var liste = @json($liste_seances_groupes);
-
-
 //fonction qui actualise les données en fonction de la salle selectionnée
 function actualiser(){
-  //je vide le tableau des données
+  
   for (var i = 8; i < 22; i++) {
-    document.getElementById("1_"+i).value='';
-    document.getElementById("2_"+i).value='';
-    document.getElementById("3_"+i).value='';
-    document.getElementById("5_"+i).value='';
-    document.getElementById("6_"+i).value='';
-    document.getElementById("0_"+i).value='';
+    for(var j=0;j<=6; j++){
+      //je vide le tableau des données
+      document.getElementById(j+"_"+i).value='';
+      //j'enlève le disabled les mets à disabled
+      document.getElementById(j+"_"+i).removeAttribute("disabled");
+
+    }
   }
-
   for (var i = 0; i < liste.length; i++) {
-
     //si c'est la salle choisis, j'affiche les cours
     if (liste[i].numero_salle==document.getElementById('id_salle').value) {
       //je recupere le noumero du jour correspondant
@@ -547,9 +498,6 @@ function actualiser(){
         document.getElementById(id_type).value=liste[i].libelle_type_seance;
         document.getElementById(id_nom).value=liste[i].nom_individu+" "+liste[i].prenom_individu;
         document.getElementById(id_groupe).value=liste[i].libelle_groupe;
-
-
-
         var id_fid_seance="id_fid_seance_"+jour+"_"+h;
         var id_fid_groupe="id_fid_groupe_"+jour+"_"+h;
         var id_fid_individu="id_fid_individu_"+jour+"_"+h;
@@ -565,12 +513,21 @@ function actualiser(){
       }
     }
   }
+  //si la colonne n'a pas été  remplie je la mets à desabled
+  for (var i = 8; i < 22; i++) {
+    //si la collonne n'a pas été remplie je la mets à disabled
+    for(var j=0;j<=6; j++){
+      if(document.getElementById(j+"_"+i).value==""){
+        document.getElementById(j+"_"+i).setAttribute("disabled","disabled");
+      }
+    }
+  }
 }
+
 actualiser();
 
-
+//pour afficher les données d'une seance dans un Modal
 function infos(id){
-
   var id_type="id_type_"+id;
   var id_nom="id_nom_"+id;
   var id_groupe="id_groupe_"+id;
@@ -580,35 +537,21 @@ function infos(id){
   document.getElementById("id_type").innerHTML=document.getElementById(id_type).value;
   document.getElementById("id_nom").innerHTML=document.getElementById(id_nom).value;
   document.getElementById("id_groupe").innerHTML=document.getElementById(id_groupe).value;
-
-  console.log(document.getElementById(id_nom).value);
-
-
   var dateDebut =  document.getElementById(id_dbt).value;
   dateDebut=new Date(dateDebut);
-
   var jour=(dateDebut.getDate()<10?'0':'') + dateDebut.getDate();
   var mois=dateDebut.getMonth()+1;
   mois=(mois<10?'0':'')+mois;
   var annee=dateDebut.getFullYear();
-
-
-
   var dateFin = document.getElementById(id_fn).value;
   dateFin=new Date(dateFin);
-
-
   var minutesDebut=(dateDebut.getMinutes()<10?'0':'') + dateDebut.getMinutes()
   var heureDebut=(dateDebut.getHours()<10?'0':'') + dateDebut.getHours();
-
   var heureFin=(dateFin.getHours()<10?'0':'') + dateFin.getHours();
   var minutesFin=(dateFin.getMinutes()<10?'0':'') + dateFin.getMinutes();
-
   document.getElementById("id_dte").innerHTML=annee+"-"+mois+"-"+jour;
   document.getElementById("id_dbt").innerHTML=heureDebut+":"+minutesDebut;
   document.getElementById("id_fn").innerHTML=heureFin+":"+minutesFin;
-
-  //pour les input
   var id_fid_seance="id_fid_seance_"+id;
   var id_fid_groupe="id_fid_groupe_"+id;
   var id_fid_individu="id_fid_individu_"+id;
@@ -623,55 +566,27 @@ function infos(id){
   document.getElementById("id_date_fin_seance").value=document.getElementById(id_date_fin_seance).value;
 }
 
+//pour modifer les données d'une seance
 function modifier(){
   document.getElementById("id_cours_modifier").value= document.getElementById("id_matiere").innerHTML;
   document.getElementById("id_cours_modifier").innerHTML= document.getElementById("id_matiere").innerHTML;
-
   document.getElementById("id_enseignant_modifier").value= document.getElementById("id_nom").innerHTML;
   document.getElementById("id_enseignant_modifier").innerHTML= document.getElementById("id_nom").innerHTML;
-
   document.getElementById("id_salle_modifier").value= document.getElementById("id_salle").value;
   document.getElementById("id_salle_modifier").innerHTML= document.getElementById("id_salle").value;
-
   document.getElementById("id_groupe_modifier").value= document.getElementById("id_groupe").innerHTML;
   document.getElementById("id_groupe_modifier").innerHTML= document.getElementById("id_groupe").innerHTML;
-
   document.getElementById("id_heure_debut_modifier").value=document.getElementById("id_dbt").innerHTML;
   document.getElementById("id_heure_debut_modifier").innerHTML=document.getElementById("id_dbt").innerHTML;
-
   document.getElementById("id_heure_fin_modifier").value=document.getElementById("id_fn").innerHTML;
   document.getElementById("id_heure_fin_modifier").innerHTML=document.getElementById("id_fn").innerHTML;
-
   document.getElementById("id_date_modifier").value=document.getElementById("id_dte").innerHTML;
   document.getElementById("id_date_modifier").innerHTML=document.getElementById("id_dte").innerHTML;
-
-
-
   document.getElementById("id_fid_cours_modifier").value=document.getElementById("id_fid_cours").value;
   document.getElementById("id_fid_individu_modifier").value=document.getElementById("id_fid_individu").value;
   document.getElementById("id_fid_groupe_modifier").value=document.getElementById("id_fid_groupe").value;
-
-
-
-/*
-  document.getElementById("id_groupe_modifier").value= document.getElementById("id_groupe").innerHTML;
-  document.getElementById("id_groupe_modifier").innerHTML= document.getElementById("id_groupe").innerHTML;
-
-  document.getElementById("id_groupe_modifier").value= document.getElementById("id_groupe").innerHTML;
-  document.getElementById("id_groupe_modifier").innerHTML= document.getElementById("id_groupe").innerHTML;
-*/
-
-
-  /*
-  document.getElementById().value=document.getElementById().value;
-  document.getElementById().value=document.getElementById().value;
-  document.getElementById().value=document.getElementById().value;
-  document.getElementById().value=document.getElementById().value;*/
-
 }
-
 console.log(liste);
-
 </script>
 
 @endsection

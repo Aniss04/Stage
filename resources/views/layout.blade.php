@@ -22,6 +22,11 @@
 
   </head>
   <body>
+    <?php 
+    setlocale(LC_TIME, 'fr_FR');
+    date_default_timezone_set('Europe/Paris');
+    $date_du_jour=date("Y-m-d");
+    ?>
 
     <!-- Barre de Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -49,6 +54,9 @@
             </div>
           </li>
           <li class="nav-item dropdown">
+            <?php print '<a class="nav-link " href="gerer-seances?date_du_jour='.$date_du_jour.'"> Gerer les séances </a>';?>
+          </li>
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Séances
             </a>
@@ -57,7 +65,7 @@
               <a class="dropdown-item" href="#">Modifier</a>
               <a class="dropdown-item" href="#">Supprimer</a>
             </div>
-          </li>
+          </li>   
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Individus
