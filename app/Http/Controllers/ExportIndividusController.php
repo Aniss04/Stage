@@ -13,9 +13,12 @@ class ExportIndividusController extends Controller
 {
 	public function afficher()
     {
+    	
+
         return view('export-individus');
     }
     public function export()
+
     {
 	  	$nom_fichier=request('nom_fichier');
 	    $nom_fichier.=".xls";

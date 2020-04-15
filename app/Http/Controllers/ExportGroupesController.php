@@ -13,7 +13,16 @@ class ExportGroupesController extends Controller
 {
 	public function afficher()
 	{
-		return view('export-groupes');
+		$listegroupes = DB::table('groupe')
+
+           ->get();
+
+        $listeannees = DB::table('groupe_individu')
+           ->select('annee')
+           ->distinct()
+           ->get(); 
+
+		return view('export-groupes',compact('listegroupes','listeannees'));
 	}
 	public function export()
 	{
