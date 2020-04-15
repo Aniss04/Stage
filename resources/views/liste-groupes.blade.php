@@ -5,17 +5,28 @@
     <div class="card mt-4">
 Selectionner le groupe :
 
-<select id= "groupe" onchange="myFunction()">
+<select id= "groupe" onchange="Function()">
 
   @foreach($listegroupes as $listegroupe)
 
   <option value= "{{ $listegroupe->id_groupe }}" > {{ $listegroupe->libelle_groupe }} </option>
   @endforeach
 </select>
+<br>
+
+<select id= "annee" onchange="Function()">
+
+  @foreach($listeannees as $listeannee)
+
+  <option value= "{{ $listeannee->annee }}" > {{ $listeannee->annee }} </option>
+  @endforeach
+</select>
+
 
 <script>
-function myFunction() {
+function Function() {
   var idGroupe = document.getElementById("groupe").value;
+  var annee = document.getElementById("annee").value;
   var donnees = @json($listeindividu);
   document.getElementById("id_tableau").innerHTML='';
    var ligne1=document.createElement("tr");
@@ -32,32 +43,27 @@ function myFunction() {
 
   for (var i = 0; i < donnees.length; i++) {
  //on test si c'est le meme groupe
-  if(donnees[i].id_groupe==idGroupe){
+  if(donnees[i].id_groupe==idGroupe && donnees[i].annee==annee){
        //on creer une ligne
        var ligne2=document.createElement("tr");
         //on cerre les colonnes
       var colonne4=document.createElement("td");
       var colonne5=document.createElement("td");
       var colonne6=document.createElement("td");
-      var colonne7=document.createElement("td");
-      var check=document.createElement("input");
+  
        //on remplie les colonne
 
         colonne4.innerHTML=donnees[i].id_individu
         colonne5.innerHTML=donnees[i].nom_individu
         colonne6.innerHTML=donnees[i].prenom_individu
-        colonne7.innerHTML=donnees[i].id_groupe
+       
 
-        check.setAttribute("type","checkbox");
-        check.name="choix[]"
-        check.value=donnees[i].id_individu
 
        //on l'ajoute dans la ligne
-        ligne2.appendChild(check);
         ligne2.appendChild(colonne4);
         ligne2.appendChild(colonne5);
         ligne2.appendChild(colonne6);
-        ligne2.appendChild(colonne7);
+       
 
       //on ajoute la ligne dans le tableau
        document.getElementById("id_tableau").appendChild(ligne2);
@@ -66,7 +72,7 @@ function myFunction() {
 
 
 }
-      return choix;
+    
 }
 
 
@@ -75,8 +81,8 @@ function myFunction() {
 
 
 </div><br>
-<button class="btn btn-success" >Supprimer</button>
-</div>
+
+</div
 
 
 <div class="container">
@@ -89,14 +95,13 @@ function myFunction() {
         <div class="table-responsive">
           <table id="id_tableau" class="table table-bordered table-striped">
             <tr>
-              <th></th>
+              
               <th>Numéro</th>
               <th>Nom</th>
               <th>Prénom</th>
             </tr>
              @foreach($listeindividu as $row)
        <tr>
-        <td class="text-center" ><input type="checkbox" name="choix[]" value="{{$row->id_individu}}"></td>
         <td>{{ $row->id_individu }}</td>
         <td>{{ $row->nom_individu }}</td>
         <td>{{ $row->prenom_individu }}</td>

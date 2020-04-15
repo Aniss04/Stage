@@ -37,7 +37,7 @@ class DesinscrireIndividusController extends Controller
 	        			->get();
     
 
-    return view('desinscrire-individus',compact('listeindividu','listegroupes'));
+    return view('desinscrire-individus',compact('listeindividu','listegroupes','listeannees'));
 
 	}
 

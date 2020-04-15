@@ -18,9 +18,20 @@ Selectionner le groupe :
 	@endforeach
 </select>
 
+<br>
+
+<select id= "annee" onchange="myFunction()">
+
+  @foreach($listeannees as $listeannee)
+
+  <option value= "{{ $listeannee->annee }}" > {{ $listeannee->annee }} </option>
+  @endforeach
+</select>
+
 <script>
 function myFunction() {
   var idGroupe = document.getElementById("groupe").value;
+  var annee = document.getElementById("annee").value;
   var donnees = @json($listeindividu);
   document.getElementById("id_tableau").innerHTML='';
    var ligne1=document.createElement("tr");
