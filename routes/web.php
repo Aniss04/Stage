@@ -47,6 +47,7 @@ Route::POST('desinscrire-individus','DesinscrireIndividusController@retirer');
 
 //formulaire de creation d'un groupe 
 Route::GET('creer-groupe','CreerGroupeController@formulaire');
+Route::POST('creer-groupe','CreerGroupeController@creer');
 
 //Lister les individus
 Route::GET('liste-groupes','ListeGroupesController@lister');

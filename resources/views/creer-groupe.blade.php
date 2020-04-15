@@ -5,13 +5,13 @@
 <br>
 <div class="card mx-auto " style="width: 50rem;">
   <div class="card-body">
-    <form action="liste-groupes" method="POST" >
+    <form action="creer-groupe" method="POST" >
       {{ csrf_field ()}}
       
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="niveau">Niveau</label>
-          <select class="form-control" name="niveau" id="niveau">
+          <select class="form-control" name="niveau" >
           
           @foreach($niveaux as $niveau)
 
@@ -20,10 +20,11 @@
           @endforeach
 
         </select>
+
         </div>
         <div class="form-group col-md-6">
           <label for="formation">Formation</label>
-          <select class="form-control" name="ufr" id="ufr">
+          <select class="form-control" name="formation" >
           
           @foreach($formations as $formation)
 
@@ -38,7 +39,7 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="modalite">Modalité</label>
-          <select class="form-control" name="ufr" id="ufr">
+          <select class="form-control" name="modalite">
           
           @foreach($modalites as $modalite)
 
@@ -50,11 +51,21 @@
         </div>
 
         
+        <div class="form-group col-md-6">
+          <label for="labelle">Labelle</label>
+          <input class="form-control" type="text" name="libelle" >
+          
         </div>
-      <button type="submit" class="btn btn-info">Créer le groupe</button>
-      </div>
+        
+
+    </div>
+      
+    <button type="submit" class="btn btn-info">Créer le groupe</button>
     </form>
+    </div>
+
   </div>
+
 </div>
 <div id="div">
 
