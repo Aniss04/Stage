@@ -26,27 +26,27 @@ class GererSeancesController extends Controller
       $finSemaine=utf8_encode(strftime('%Y-%m-%d 23:59:59', mktime(0, 0, 0, date_format($date_du_jour,'m'), date_format($date_du_jour,'d')+$diff, date_format($date_du_jour,'y'))));
     }
 
-    $cours=DB::table('Cours')->get();
+    $cours=DB::table('cours')->get();
 
-    $salles=DB::table('Salle')
-    ->JOIN('Seance','Seance.fid_salle','=','Salle.id_salle')
+    $salles=DB::table('salle')
+    ->JOIN('seance','seance.fid_salle','=','salle.id_salle')
     ->get();
 
-    $groupes=DB::table('Groupe')->get();
+    $groupes=DB::table('groupe')->get();
 
     $enseignants=DB::table('individu')
     ->WHERE('annuaire','=',1)
     ->get();
 
-    $liste_seances_groupes=DB::table('Salle')
-    ->JOIN ('Seance','Seance.fid_salle','=','Salle.id_salle')
-    ->JOIN ('Type_Seance','Seance.fid_type_seance','=','Type_Seance.id_type_seance')
-    ->JOIN ('Seance_Groupe','Seance_Groupe.fid_seance','=','Seance.id_seance')
-    ->JOIN ('Cours','Cours.id_cours','=','Seance_Groupe.fid_cours')
-    ->JOIN ('individu','individu.id_individu','=','Seance_Groupe.fid_individu')
-    ->JOIN ('Groupe','Groupe.id_groupe','=','Seance_Groupe.fid_groupe')
+    $liste_seances_groupes=DB::table('salle')
+    ->JOIN ('seance','seance.fid_salle','=','salle.id_salle')
+    ->JOIN ('type_seance','seance.fid_type_seance','=','type_seance.id_type_seance')
+    ->JOIN ('seance_groupe','seance_groupe.fid_seance','=','seance.id_seance')
+    ->JOIN ('cours','cours.id_cours','=','seance_groupe.fid_cours')
+    ->JOIN ('individu','individu.id_individu','=','seance_groupe.fid_individu')
+    ->JOIN ('groupe','groupe.id_groupe','=','seance_groupe.fid_groupe')
     ->whereBetween('date_debut_seance', [$debutSemaine, $finSemaine])
-    ->orderBy('Salle.numero_salle','desc')
+    ->orderBy('salle.numero_salle','desc')
     ->orderBy('date_debut_seance','asc')
     ->get();
 
@@ -61,7 +61,7 @@ class GererSeancesController extends Controller
 
 
     //je recupere l'id de la seance grace au numéro de la salles
-    $id_seance=DB::table('Seance')
+    $id_seance=DB::table('seance')
     ->WHERE('fid_salle','=',request('id_salle'))
     ->take(1)
     ->value('id_seance');
@@ -77,15 +77,15 @@ class GererSeancesController extends Controller
     $date_fin=request('date_seance')." ".request('heure_fin_seance');
 
     //je verifie si cette page horraire a été deja reservée
-    $nb=DB::table('Seance_Groupe')
+    $nb=DB::table('seance_groupe')
     ->where('fid_seance','=',$id_seance)
     ->whereBetween('date_debut_seance', [$date_debut, $date_fin])
     ->whereNotBetween('date_fin_seance', [$date_debut, $date_fin])
     ->count();
 
     if($nb==0){
-      //j'enregistre dans la BDD, dans la table Seance_Groupe
-      DB::table('Seance_Groupe')
+      //j'enregistre dans la BDD, dans la table seance_groupe
+      DB::table('seance_groupe')
       ->updateOrInsert(['fid_seance'=>$id_seance,'fid_groupe'=>request('id_groupe'),'fid_individu'=>request('id_enseignant'),
       'fid_cours'=>request('id_cours'),'date_debut_seance'=>$date_debut,'date_fin_seance'=>$date_fin],
       ['fid_seance'=>$id_seance,'fid_groupe'=>request('id_groupe'),'fid_individu'=>request('id_enseignant'),
@@ -117,13 +117,13 @@ class GererSeancesController extends Controller
       $date_debut=$date." ".$heure_debut;
       $date_fin=$date." ".$heure_fin;
       //je recupere la seance
-      $id_seance=DB::table('Seance')
-      ->join('Salle','Seance.fid_salle','=','Salle.id_salle')
-      ->WHERE('Salle.numero_salle','=',request('numero_salle'))
+      $id_seance=DB::table('seance')
+      ->join('salle','seance.fid_salle','=','salle.id_salle')
+      ->WHERE('salle.numero_salle','=',request('numero_salle'))
       ->take(1)
-      ->value('Seance.id_seance');
+      ->value('seance.id_seance');
 
-      DB::table('Seance_Groupe')
+      DB::table('seance_groupe')
           ->where('fid_groupe', request('fid_groupe'))
           ->where('fid_cours', request('fid_cours'))
           ->where('fid_individu', request('fid_individu'))
@@ -140,7 +140,7 @@ class GererSeancesController extends Controller
     //pour la suppression
      if(!empty(request('supprimer'))){
 
-       DB::table('Seance_Groupe')
+       DB::table('seance_groupe')
        ->where('fid_seance', '=', request('fid_seance'))
        ->where('fid_groupe', '=', request('fid_groupe'))
        ->where('fid_individu', '=', request('fid_individu'))
@@ -149,7 +149,7 @@ class GererSeancesController extends Controller
        ->where('date_fin_seance', '=', request('date_fin_seance'))
        ->delete();
 
-       $salle=DB::table('Salle')
+       $salle=DB::table('salle')
        ->JOIN('seance','fid_salle','=','id_salle')
        ->WHERE('id_seance',request('fid_seance'))
        ->take(1)

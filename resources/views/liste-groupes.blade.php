@@ -42,12 +42,15 @@ function Function() {
    var colonne1=document.createElement("th");
    var colonne2=document.createElement("th");
    var colonne3=document.createElement("th");
+   var colonne7=document.createElement('th');
    colonne1.innerHTML="Numéro"
    colonne2.innerHTML="Nom"
    colonne3.innerHTML="Prenom"
+   colonne7.innerHTML="TD"
    ligne1.appendChild(colonne1);
    ligne1.appendChild(colonne2);
    ligne1.appendChild(colonne3);
+   ligne1.appendChild(colonne7);
    document.getElementById("id_tableau").appendChild(ligne1);
 
   for (var i = 0; i < donnees.length; i++) {
@@ -59,19 +62,20 @@ function Function() {
       var colonne4=document.createElement("td");
       var colonne5=document.createElement("td");
       var colonne6=document.createElement("td");
-  
+      var colonne8=document.createElement("td");
        //on remplie les colonne
 
         colonne4.innerHTML=donnees[i].id_individu
         colonne5.innerHTML=donnees[i].nom_individu
         colonne6.innerHTML=donnees[i].prenom_individu
-       
+        colonne8.innerHTML=donnees[i].libelle
 
 
        //on l'ajoute dans la ligne
         ligne2.appendChild(colonne4);
         ligne2.appendChild(colonne5);
         ligne2.appendChild(colonne6);
+        ligne2.appendChild(colonne8);
        
 
       //on ajoute la ligne dans le tableau
@@ -107,12 +111,14 @@ function Function() {
               <th>Numéro</th>
               <th>Nom</th>
               <th>Prénom</th>
+              <th>TD</th>
             </tr>
              @foreach($listeindividu as $row)
        <tr>
         <td>{{ $row->id_individu }}</td>
         <td>{{ $row->nom_individu }}</td>
         <td>{{ $row->prenom_individu }}</td>
+        <td>{{ $row->libelle}}</td>
        </tr>
        @endforeach
           </table>

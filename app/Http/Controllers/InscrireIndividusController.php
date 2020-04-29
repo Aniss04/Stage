@@ -20,6 +20,7 @@ class InscrireIndividusController extends Controller
     $datas = DB::table('groupe_individu')
     		->select('fid_individu')
 	        ->get();
+	        
     if(count($datas)>0){
     foreach ($datas as $data) {
                 $Ingroupe[] = $data->fid_individu;

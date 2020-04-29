@@ -56,6 +56,9 @@ Route::POST('supprimer','SupprimerGroupeController@retirer');
 //Lister les individus
 Route::GET('liste-groupes','ListeGroupesController@lister');
 
+//Ajout a un td
+Route::GET('td','TdController@lister');
+Route::POST('td','TdController@ajouter');
 
 //Gerer les seances (Nfn)
 Route::GET('gerer-seances','GererSeancesController@afficher');

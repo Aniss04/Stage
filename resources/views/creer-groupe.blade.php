@@ -56,12 +56,19 @@
           <input class="form-control" type="text" name="libelle" >
           
         </div>
+
+
+        <div class="form-group col-md-6">
+          <label for="commentaire">Commentaire</label>
+          <input class="form-control" type="text" maxlength="50" name="commentaire" >
+          
+        </div>
         
 
     </div>
       
-    <button type="submit" class="btn btn-info">Créer le groupe</button>
-    </form>
+    <button type="submit" name='btn' value='creer' class="btn btn-info">Créer le groupe</button>
+    
     </div>
 
   </div>
@@ -73,11 +80,10 @@
 </div>
 
 <br>
-<!--
+ 
 <div class="card mx-auto " style="width: 50rem;">
   <div class="card-body">
-    <form action="liste-groupes" method="POST" >
-      {{ csrf_field ()}}
+ 
       
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -105,10 +111,34 @@
         </select>
         </div>
 
+        <div class="form-group col-md-6"> 
+          <label for="Groupe 2">Année</label>
+        <select class="form-control" id= "annee" name="annee">
+
+        @foreach($annee as $listeannee)
+
+        <option value= "{{ $listeannee->annee }}" > {{ $listeannee->annee }} </option>
+        @endforeach
+        </select>
+        </div>
+
+        
+        <div class="form-group col-md-6">
+          <label for="labelle">Labelle</label>
+          <input class="form-control" type="text" name="libelle2" >
+          
+        </div>
+
+
+        <div class="form-group col-md-6">
+          <label for="commentaire">Commentaire</label>
+          <input class="form-control" type="text" maxlength="50" name="commentaire2" >
+          
+        </div>
 
         
         </div>
-      <button type="submit" class="btn btn-info" >Créer le groupe</button>
+      <button type="submit" name='btn' value='fusion' class="btn btn-info" >Créer le groupe</button>
       </div>
     </form>
   </div>
@@ -117,9 +147,9 @@
 
 
 </div>
--->
 
 
+</form>
 
 
 

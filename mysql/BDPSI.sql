@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.10
--- http://www.phpmyadmin.net
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
 --
--- Client :  localhost:8889
--- Généré le :  Mer 15 Avril 2020 à 23:56
--- Version du serveur :  5.5.42
--- Version de PHP :  5.6.10
+-- Hôte : db
+-- Généré le : lun. 27 avr. 2020 à 23:24
+-- Version du serveur :  5.7.22
+-- Version de PHP : 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,23 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `BDPSI`
+-- Base de données : `bdpsi`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `association_groupe`
---
-CREATE DATABASE BDPSI;
-USE BDPSI;
-
-
-CREATE TABLE `association_groupe` (
-  `id_association` int(11) NOT NULL,
-  `fid_groupe_1` int(11) NOT NULL,
-  `fid_groupe_2` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -45,10 +31,10 @@ CREATE TABLE `composante` (
   `id_composante` bigint(20) NOT NULL,
   `libelle_composante` varchar(255) DEFAULT NULL,
   `code_composante` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `composante`
+-- Déchargement des données de la table `composante`
 --
 
 INSERT INTO `composante` (`id_composante`, `libelle_composante`, `code_composante`) VALUES
@@ -57,11 +43,11 @@ INSERT INTO `composante` (`id_composante`, `libelle_composante`, `code_composant
 (3, 'Philosophie, Information-Communication, Langage, Littérature, Arts du Spectacle (PHILLIA)', 'PHILLIA'),
 (4, 'Sciences Économiques, Gestion, Mathématiques, Informatique', 'SEGMI'),
 (5, 'Systèmes Industriels et Techniques de Communication', 'SITEC'),
-(6, 'Sciences Psychologiques et Sciences de l''Éducation (SPSE)', 'SPSE'),
+(6, 'Sciences Psychologiques et Sciences de l\'Éducation (SPSE)', 'SPSE'),
 (7, 'Sciences Sociales et Administration (SSA)', 'SSA'),
 (8, 'Sciences et Techniques des Activités Physiques et Sportives (STAPS)', 'STAPS'),
-(9, 'IUT Ville d''Avray / Saint-Cloud / Nanterre', 'IUT'),
-(10, 'Institut de Préparation à l''Administration Générale (IPAG)', 'IPAG');
+(9, 'IUT Ville d\'Avray / Saint-Cloud / Nanterre', 'IUT'),
+(10, 'Institut de Préparation à l\'Administration Générale (IPAG)', 'IPAG');
 
 -- --------------------------------------------------------
 
@@ -73,6 +59,17 @@ CREATE TABLE `cours` (
   `id_cours` bigint(20) NOT NULL,
   `libelle_cours` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cours`
+--
+
+INSERT INTO `cours` (`id_cours`, `libelle_cours`) VALUES
+(1, 'Mathématiques'),
+(2, 'Système d\'information'),
+(3, 'Anglais'),
+(4, 'Recherche opérationnelle'),
+(5, 'Système d\'exploitation et programmation C');
 
 -- --------------------------------------------------------
 
@@ -86,10 +83,10 @@ CREATE TABLE `formation` (
   `VET` varchar(255) DEFAULT NULL,
   `fid_composante` bigint(20) DEFAULT NULL,
   `code_formation` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `formation`
+-- Déchargement des données de la table `formation`
 --
 
 INSERT INTO `formation` (`id_formation`, `libelle_formation`, `VET`, `fid_composante`, `code_formation`) VALUES
@@ -107,17 +104,20 @@ CREATE TABLE `groupe` (
   `libelle_groupe` varchar(255) DEFAULT NULL,
   `fid_formation` bigint(20) DEFAULT NULL,
   `fid_modalite` bigint(20) DEFAULT NULL,
-  `fid_niveau` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `fid_niveau` bigint(20) NOT NULL,
+  `commentaire` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `groupe`
+-- Déchargement des données de la table `groupe`
 --
 
-INSERT INTO `groupe` (`id_groupe`, `libelle_groupe`, `fid_formation`, `fid_modalite`, `fid_niveau`) VALUES
-(3, 'L3_MIAGE_APP', 1, 2, 3),
-(4, 'L2_MIASHS', 2, 3, 2),
-(9, 'L1_MIASHS', 2, 3, 1);
+INSERT INTO `groupe` (`id_groupe`, `libelle_groupe`, `fid_formation`, `fid_modalite`, `fid_niveau`, `commentaire`) VALUES
+(3, 'L3_MIAGE_APP', 1, 2, 3, NULL),
+(4, 'L2_MIASHS', 2, 3, 2, NULL),
+(9, 'L1_MIASHS', 2, 3, 1, NULL),
+(10, 'L3_MIAGE_FI', 1, 3, 3, NULL),
+(11, 'L3_MIAGE', NULL, NULL, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -128,54 +128,59 @@ INSERT INTO `groupe` (`id_groupe`, `libelle_groupe`, `fid_formation`, `fid_modal
 CREATE TABLE `groupe_individu` (
   `fid_groupe` bigint(20) NOT NULL,
   `fid_individu` bigint(20) NOT NULL,
-  `annee` bigint(20) NOT NULL
+  `annee` bigint(20) NOT NULL,
+  `td` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `groupe_individu`
+-- Déchargement des données de la table `groupe_individu`
 --
 
-INSERT INTO `groupe_individu` (`fid_groupe`, `fid_individu`, `annee`) VALUES
-(3, 340007, 2019),
-(3, 340008, 2019),
-(3, 340009, 2019),
-(3, 340010, 2019),
-(3, 340011, 2019),
-(3, 340015, 2020),
-(3, 340016, 2020),
-(3, 340017, 2020),
-(3, 340020, 2019),
-(3, 340021, 2019),
-(3, 340022, 2019),
-(3, 340023, 2019),
-(3, 340024, 2019),
-(3, 340025, 2019),
-(3, 340026, 2019),
-(4, 340001, 2019),
-(4, 340002, 2019),
-(4, 340003, 2019),
-(4, 340004, 2019),
-(4, 340005, 2019),
-(4, 340006, 2019),
-(4, 340012, 2020),
-(4, 340013, 2020),
-(4, 340014, 2020),
-(4, 340018, 2020),
-(4, 340019, 2020),
-(9, 340027, 2020),
-(9, 340028, 2020),
-(9, 340029, 2020),
-(9, 340030, 2020),
-(9, 340031, 2020),
-(9, 340032, 2020),
-(9, 340033, 2019),
-(9, 340034, 2019),
-(9, 340035, 2019),
-(9, 340036, 2019),
-(9, 340037, 2019),
-(9, 340038, 2019),
-(9, 340039, 2019),
-(9, 340040, 2019);
+INSERT INTO `groupe_individu` (`fid_groupe`, `fid_individu`, `annee`, `td`) VALUES
+(3, 340007, 2019, NULL),
+(3, 340008, 2019, NULL),
+(3, 340009, 2019, NULL),
+(3, 340010, 2019, NULL),
+(3, 340011, 2019, NULL),
+(3, 340015, 2020, NULL),
+(3, 340016, 2020, NULL),
+(3, 340017, 2020, NULL),
+(3, 340020, 2019, NULL),
+(3, 340021, 2019, NULL),
+(3, 340022, 2019, NULL),
+(3, 340023, 2019, NULL),
+(3, 340024, 2019, NULL),
+(3, 340025, 2019, NULL),
+(3, 340026, 2019, NULL),
+(4, 340001, 2019, NULL),
+(4, 340002, 2019, NULL),
+(4, 340003, 2019, NULL),
+(4, 340004, 2019, NULL),
+(4, 340005, 2019, NULL),
+(4, 340006, 2019, NULL),
+(4, 340012, 2020, NULL),
+(4, 340013, 2020, NULL),
+(4, 340014, 2020, NULL),
+(4, 340018, 2020, NULL),
+(4, 340019, 2020, NULL),
+(9, 340007, 2020, NULL),
+(9, 340027, 2020, NULL),
+(9, 340028, 2020, NULL),
+(9, 340029, 2020, NULL),
+(9, 340030, 2020, NULL),
+(9, 340031, 2020, NULL),
+(9, 340032, 2020, NULL),
+(9, 340033, 2019, NULL),
+(9, 340034, 2019, NULL),
+(9, 340035, 2019, NULL),
+(9, 340036, 2019, NULL),
+(9, 340037, 2019, NULL),
+(9, 340038, 2019, NULL),
+(9, 340039, 2019, NULL),
+(9, 340040, 2019, NULL),
+(11, 340015, 2020, NULL),
+(11, 340016, 2020, NULL),
+(11, 340017, 2020, NULL);
 
 -- --------------------------------------------------------
 
@@ -194,7 +199,7 @@ CREATE TABLE `individu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `individu`
+-- Déchargement des données de la table `individu`
 --
 
 INSERT INTO `individu` (`id_individu`, `annuaire`, `nom_individu`, `prenom_individu`, `mail_individu`, `tel_individu`, `fid_type_individu`) VALUES
@@ -403,13 +408,13 @@ INSERT INTO `individu` (`id_individu`, `annuaire`, `nom_individu`, `prenom_indiv
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `migrations`
+-- Déchargement des données de la table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -426,10 +431,10 @@ CREATE TABLE `modalite` (
   `id_modalite` bigint(20) NOT NULL,
   `libelle_modalite` varchar(255) DEFAULT NULL,
   `code_modalite` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `modalite`
+-- Déchargement des données de la table `modalite`
 --
 
 INSERT INTO `modalite` (`id_modalite`, `libelle_modalite`, `code_modalite`) VALUES
@@ -450,10 +455,10 @@ CREATE TABLE `niveau` (
   `id_niveau` bigint(20) NOT NULL,
   `libelle_niveau` varchar(255) DEFAULT NULL,
   `code_niveau` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `niveau`
+-- Déchargement des données de la table `niveau`
 --
 
 INSERT INTO `niveau` (`id_niveau`, `libelle_niveau`, `code_niveau`) VALUES
@@ -475,10 +480,10 @@ CREATE TABLE `salle` (
   `capacite_salle` bigint(20) DEFAULT NULL,
   `nb_postes` bigint(20) DEFAULT NULL,
   `projecteur` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `salle`
+-- Déchargement des données de la table `salle`
 --
 
 INSERT INTO `salle` (`id_salle`, `numero_salle`, `capacite_salle`, `nb_postes`, `projecteur`) VALUES
@@ -503,10 +508,10 @@ CREATE TABLE `seance` (
   `id_seance` bigint(20) NOT NULL,
   `fid_salle` bigint(20) DEFAULT NULL,
   `fid_type_seance` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `seance`
+-- Déchargement des données de la table `seance`
 --
 
 INSERT INTO `seance` (`id_seance`, `fid_salle`, `fid_type_seance`) VALUES
@@ -539,6 +544,25 @@ CREATE TABLE `seance_groupe` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `td`
+--
+
+CREATE TABLE `td` (
+  `id_td` int(11) NOT NULL,
+  `libelle` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `td`
+--
+
+INSERT INTO `td` (`id_td`, `libelle`) VALUES
+(1, 'TD1'),
+(2, 'TD2');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `type_individu`
 --
 
@@ -548,7 +572,7 @@ CREATE TABLE `type_individu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `type_individu`
+-- Déchargement des données de la table `type_individu`
 --
 
 INSERT INTO `type_individu` (`id_type_individu`, `libelle_type_individu`) VALUES
@@ -564,10 +588,10 @@ INSERT INTO `type_individu` (`id_type_individu`, `libelle_type_individu`) VALUES
 CREATE TABLE `type_seance` (
   `id_type_seance` bigint(20) NOT NULL,
   `libelle_type_seance` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `type_seance`
+-- Déchargement des données de la table `type_seance`
 --
 
 INSERT INTO `type_seance` (`id_type_seance`, `libelle_type_seance`) VALUES
@@ -576,14 +600,8 @@ INSERT INTO `type_seance` (`id_type_seance`, `libelle_type_seance`) VALUES
 (3, 'Examen');
 
 --
--- Index pour les tables exportées
+-- Index pour les tables déchargées
 --
-
---
--- Index pour la table `association_groupe`
---
-ALTER TABLE `association_groupe`
-  ADD PRIMARY KEY (`id_association`);
 
 --
 -- Index pour la table `composante`
@@ -617,8 +635,7 @@ ALTER TABLE `groupe`
 -- Index pour la table `groupe_individu`
 --
 ALTER TABLE `groupe_individu`
-  ADD PRIMARY KEY (`fid_groupe`,`fid_individu`),
-  ADD KEY `fid_individu` (`fid_individu`);
+  ADD PRIMARY KEY (`fid_groupe`,`fid_individu`);
 
 --
 -- Index pour la table `individu`
@@ -681,64 +698,70 @@ ALTER TABLE `type_seance`
   ADD PRIMARY KEY (`id_type_seance`);
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
---
--- AUTO_INCREMENT pour la table `association_groupe`
---
-ALTER TABLE `association_groupe`
-  MODIFY `id_association` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `composante`
 --
 ALTER TABLE `composante`
-  MODIFY `id_composante` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id_composante` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT pour la table `cours`
 --
 ALTER TABLE `cours`
-  MODIFY `id_cours` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cours` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT pour la table `formation`
 --
 ALTER TABLE `formation`
-  MODIFY `id_formation` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id_formation` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT pour la table `groupe`
 --
 ALTER TABLE `groupe`
-  MODIFY `id_groupe` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id_groupe` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 --
 -- AUTO_INCREMENT pour la table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT pour la table `modalite`
 --
 ALTER TABLE `modalite`
-  MODIFY `id_modalite` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id_modalite` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT pour la table `niveau`
 --
 ALTER TABLE `niveau`
-  MODIFY `id_niveau` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id_niveau` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT pour la table `salle`
 --
 ALTER TABLE `salle`
-  MODIFY `id_salle` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id_salle` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT pour la table `seance`
 --
 ALTER TABLE `seance`
-  MODIFY `id_seance` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id_seance` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT pour la table `type_seance`
 --
 ALTER TABLE `type_seance`
-  MODIFY `id_type_seance` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_type_seance` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

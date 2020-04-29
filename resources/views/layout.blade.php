@@ -49,6 +49,7 @@
               <a class="dropdown-item" href="supprimer">Supprimer</a>
               <a class="dropdown-item" href="inscrire-individus">Inscrire</a>
               <a class="dropdown-item" href="desinscrire-individus">Désinscrire</a>
+              <a class="dropdown-item" href="td">TD</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="import-groupes">Importer</a>
               <a class="dropdown-item" href="export-groupes">Exporter</a>

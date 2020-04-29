@@ -1,43 +1,61 @@
 @extends('layout')
 
 @section('contenu')
-
 <br>
 
-<form action="desinscrire-individus" method="post" >
+<form action="td" method="post" >
 {{ csrf_field ()}}
-
 
 <div class="card mx-auto " style="width: 50rem;">
   <div class="card-body">
+<h5>Selectionner le groupe :</h5>
+<br>
+<div class="row">
 
-<h5>Selectionner le groupe : </h5>
-<br> 
-<select class="form-control" id= "groupe" onchange="myFunction()">
+<div class="form-group col-md-6">
+<select class="form-control" name ="groupe" id= "groupe" onchange="Function()">
 
-	@foreach($listegroupes as $listegroupe)
+  @foreach($listegroupes as $listegroupe)
 
-	<option value= "{{ $listegroupe->id_groupe }}" > {{ $listegroupe->libelle_groupe }} </option>
-	@endforeach
+  <option value= "{{ $listegroupe->id_groupe }}" > {{ $listegroupe->libelle_groupe }} </option>
+  @endforeach
 </select>
-
+</div>
 <br>
 
-<select class="form-control" id= "annee" onchange="myFunction()">
+<div class="form-group col-md-6">
+<select class="form-control" id= "annee" onchange="Function()">
 
   @foreach($listeannees as $listeannee)
 
   <option value= "{{ $listeannee->annee }}" > {{ $listeannee->annee }} </option>
   @endforeach
 </select>
+</div>
+
+<br>
+<h5>Selectionner le groupe :</h5>
+<br>
+
+<div class="form-group col-md-6">
+<select class="form-control" name="td" id= "td">
+
+  @foreach($listetds as $listetd)
+
+  <option value= "{{ $listetd->id_td }}" > {{ $listetd->libelle }} </option>
+  @endforeach
+</select>
+</div>
+</div>
 
 <script>
-function myFunction() {
-  document.getElementById("id_tableau").innerHTML='';
+
+function Function() {
+  
   var idGroupe = document.getElementById("groupe").value;
   var annee = document.getElementById("annee").value;
   var donnees = @json($listeindividu);
-  
+  document.getElementById("id_tableau").innerHTML='';
    var ligne1=document.createElement("tr");
    var colonne1=document.createElement("th");
    var colonne2=document.createElement("th");
@@ -52,7 +70,6 @@ function myFunction() {
    ligne1.appendChild(colonne2);
    ligne1.appendChild(colonne3);
    var tab=document.getElementById("id_tableau");
-   tab.classList.add('table', 'table-bordered' ,'table-striped');
    tab.appendChild(ligne1);
 
   for (var i = 0; i < donnees.length; i++) {
@@ -100,7 +117,7 @@ function myFunction() {
 
 
 }
-			return choix;
+      return choix;
 }
 
 
@@ -109,7 +126,7 @@ function myFunction() {
 
 
 <br>
-<button class="btn btn-info" >Supprimer</button>
+<button class="btn btn-info" >Ajouter</button>
 </div>
 </div>
 
@@ -132,7 +149,7 @@ function myFunction() {
             </tr>
             
        <tr>
-       	
+        
        </tr>
     
           </table>

@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 
-class ListeGroupesController extends Controller
+class TdController extends Controller
 {
   
   public function lister()
   {
   
 
-
+  $listetds= DB::table('td')
+    ->get();
+ 
   $listegroupes = DB::table('groupe')
 
            ->get();
@@ -29,14 +31,35 @@ class ListeGroupesController extends Controller
               //->where('id_groupe', $groupe)
               ->join('groupe_individu','groupe_individu.fid_groupe','=','groupe.id_groupe')
               ->join('individu','individu.id_individu','=','groupe_individu.fid_individu')
-              ->leftjoin('td','td.id_td','=','groupe_individu.td')
-              ->select('id_groupe','id_individu','nom_individu','prenom_individu','annee','td','libelle')
+              ->where('td',null)
+              ->select('id_groupe','id_individu','nom_individu','prenom_individu','annee')
                 ->get();
     
 
-    return view('liste-groupes',compact('listeindividu','listegroupes','listeannees'));
+    return view('td',compact('listeindividu','listegroupes','listeannees','listetds'));
 
   }
+
+
+
+  public function ajouter()
+{ 
+  //if(count(request('choix')>0)
+  
+  for($i=0;$i<count(request('choix'));$i++)
+  {
+   DB::table('groupe_individu')
+  ->where('fid_individu',request('choix')[$i])
+  ->update(['td' => request('td')])
+  ;
+  }
+  
+  header ('Location: /td');
+  exit();
+
+}
+
+
 
 }
 
